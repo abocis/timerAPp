@@ -55,11 +55,13 @@ class NotificationUtil {
             val pausePendingIntent = PendingIntent.getBroadcast(context,
                 0,pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            val df = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
+            val df = SimpleDateFormat("HH:mm")
+            val endTime = Date(WakeUpTime)
+            val formattedTime = df.format(endTime)
 
             val nBuilder = getBasisNotificationBuilder(context, CHANEL_ID_TIMER, true  )
             nBuilder.setContentTitle("Timer is Running")
-                .setContentText("End: ${df.format(Date(WakeUpTime))}")
+                .setContentText("Timer Ends at : $formattedTime")
                 .setContentIntent(getPendingIntentWithStack(context, MainActivity::class.java))
                 .setOngoing(true)
                 .addAction(R.drawable.ic_stop24, "Stop", stopPendingIntent)

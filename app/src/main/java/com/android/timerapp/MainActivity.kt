@@ -76,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -114,7 +113,6 @@ class MainActivity : AppCompatActivity() {
 
         /** remove background timer,*/
         removeAlarm(this)
-
         // hide notification
         NotificationUtil.hideTimerNotification(this)
     }

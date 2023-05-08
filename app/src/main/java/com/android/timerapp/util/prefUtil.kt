@@ -1,5 +1,6 @@
 package com.android.timerapp.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.preference.PreferenceManager
 import com.android.timerapp.MainActivity
@@ -56,12 +57,11 @@ class prefUtil {
 
         private const val ALARM_SET_TIME_ID = "com.timerapp.background_time"
 
-        fun getAlarmSetTime ( context: Context): Long{
+        @SuppressLint("SuspiciousIndentation")
+        fun getAlarmSetTime (context: Context): Long{
           val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
             return preferences.getLong(ALARM_SET_TIME_ID,0)
-
-
         }
         fun setAlarmSetTime(time: Long, context: Context){
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()

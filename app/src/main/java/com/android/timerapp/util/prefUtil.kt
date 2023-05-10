@@ -57,7 +57,7 @@ class prefUtil {
 
         private const val ALARM_SET_TIME_ID = "com.timerapp.background_time"
 
-        @SuppressLint("SuspiciousIndentation")
+
         fun getAlarmSetTime (context: Context): Long{
           val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 

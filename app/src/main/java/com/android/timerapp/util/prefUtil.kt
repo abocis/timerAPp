@@ -59,7 +59,7 @@ class prefUtil {
 
 
         fun getAlarmSetTime (context: Context): Long{
-          val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
             return preferences.getLong(ALARM_SET_TIME_ID,0)
         }

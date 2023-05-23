@@ -22,7 +22,7 @@ class TimerNotificationActionReceiver : BroadcastReceiver() {
                 val alarmSetTime = prefUtil.getAlarmSetTime(context)
                 val nowSeconds = MainActivity.nowSeconds
 
-                secondsRemaining -= nowSeconds -alarmSetTime
+                secondsRemaining -= nowSeconds - alarmSetTime
                 prefUtil.setSecondsRemaining(secondsRemaining,context)
 
                 MainActivity.removeAlarm(context)

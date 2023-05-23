@@ -24,7 +24,7 @@ class NotificationUtil {
     companion object {
         private const val CHANEL_ID_TIMER = "menu_timer"
         private const val  CHANEL_NAME_TIMER = "TIMER APP TIMER"
-        private const val TIMER_ID = 0
+        private const val TIMER_ID = 1
 
         fun showTimerExpired(context: Context){
             val startIntent = Intent(context,TimerNotificationActionReceiver::class.java)
@@ -39,7 +39,7 @@ class NotificationUtil {
                 .addAction(R.drawable.ic_play_circle, "start", startPendingIntent)
 
             val nManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nManager.createNotificationChannel(CHANEL_ID_TIMER, CHANEL_NAME_TIMER,true)
+            createNotificationChannel(context,CHANEL_ID_TIMER, CHANEL_NAME_TIMER, true)
 
             nManager.notify(TIMER_ID, nBuilder.build())
         }
@@ -68,7 +68,7 @@ class NotificationUtil {
                 .addAction(R.drawable.ic_pause_circle, "pause", pausePendingIntent)
 
             val nManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nManager.createNotificationChannel(CHANEL_ID_TIMER, CHANEL_NAME_TIMER,true)
+            createNotificationChannel(context, CHANEL_ID_TIMER, CHANEL_NAME_TIMER, true)
 
             nManager.notify(TIMER_ID, nBuilder.build())
 
@@ -87,7 +87,7 @@ class NotificationUtil {
                 .addAction(R.drawable.ic_play_circle, "Resume", resumePendingIntent)
 
             val nManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            nManager.createNotificationChannel(CHANEL_ID_TIMER, CHANEL_NAME_TIMER,true)
+            createNotificationChannel(context, CHANEL_ID_TIMER, CHANEL_NAME_TIMER,true)
 
             nManager.notify(TIMER_ID, nBuilder.build())
 
@@ -97,19 +97,20 @@ class NotificationUtil {
             nManager.cancel(TIMER_ID)
 
         }
-
-
-
-
-        private fun getBasisNotificationBuilder(context: Context, chanelId: String, playSound: Boolean)
+        private fun getBasisNotificationBuilder(context: Context, chanelId: String, isHighPriority: Boolean)
         : NotificationCompat.Builder{
-            val notificationSound: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             val nBuilder = NotificationCompat.Builder(context, chanelId)
                 .setSmallIcon(R.drawable.baseline_timer_24)
                 .setAutoCancel(true)
                 .setDefaults(0)
+            if (isHighPriority){
+                nBuilder.priority = NotificationCompat.PRIORITY_HIGH
 
-            if (playSound) nBuilder.setSound(notificationSound)
+            }else{
+                nBuilder.priority = NotificationCompat.PRIORITY_DEFAULT
+            }
+
+
 
             return nBuilder
         }
@@ -124,17 +125,24 @@ class NotificationUtil {
         }
 
 
-        @TargetApi(26)
-        private fun NotificationManager.createNotificationChannel(chanelID: String, chanelName: String, playSound: Boolean){
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                val chanelImportance = if (playSound) NotificationManager.IMPORTANCE_DEFAULT
+        private fun createNotificationChannel(context: Context, chanelID: String,
+                                              chanelName: String
+                                              , playSound: Boolean){
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val channelImportance = if (playSound) NotificationManager.IMPORTANCE_DEFAULT
                 else NotificationManager.IMPORTANCE_LOW
-                val nchanel = NotificationChannel(chanelID, chanelName, chanelImportance)
-                nchanel.enableLights(true)
-                nchanel.lightColor = Color.BLUE
-                this.createNotificationChannel(nchanel)
+                val channel = NotificationChannel(chanelID, chanelName, channelImportance)
+                channel.enableLights(true)
+                channel.lightColor = Color.BLUE
+
+                val notificationManager =
+                    context.getSystemService(NotificationManager::class.java)
+                notificationManager?.createNotificationChannel(channel)
             }
+
+
         }
     }
 }

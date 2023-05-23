@@ -115,6 +115,8 @@ class MainActivity : AppCompatActivity() {
         removeAlarm(this)
         // hide notification
         NotificationUtil.hideTimerNotification(this)
+
+
     }
 
     override fun onPause() {
@@ -171,6 +173,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onTimerFinished() {
        timerState = TimerState.Stopped
+        TimerForegroundService.stopTimer(this)
 
         //set the length of the timer to be the one set in SettingsActivity
         //if the length was changed when the timer was running
@@ -190,6 +193,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun startTimer() {
         timerState = TimerState.Running
+        TimerForegroundService.startTimer(this,secondsRemaining)
+        updateButton()
 
         timer = object : CountDownTimer(secondsRemaining * 1000,1000 ) {
 
@@ -197,6 +202,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished / 1000
+
                 updateCountDownUI()
             }
         }.start()
